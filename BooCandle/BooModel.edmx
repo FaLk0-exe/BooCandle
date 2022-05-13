@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище BooDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Candle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CandleCode" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="float" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Form" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CandleComposition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CandleId" Type="int" Nullable="false" />
+          <Property Name="MaterialId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ListOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="CandleId" Type="int" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="MaterialTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MaterialType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="OrderStatus" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Description" Type="text" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__CandleCom__Candl__2C3393D0">
+          <End Role="Candle" Type="Self.Candle" Multiplicity="1" />
+          <End Role="CandleComposition" Type="Self.CandleComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CandleComposition">
+              <PropertyRef Name="CandleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CandleCom__Mater__2D27B809">
+          <End Role="Material" Type="Self.Material" Multiplicity="1" />
+          <End Role="CandleComposition" Type="Self.CandleComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CandleComposition">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ListOrder__Candl__31EC6D26">
+          <End Role="Candle" Type="Self.Candle" Multiplicity="1" />
+          <End Role="ListOrder" Type="Self.ListOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ListOrder">
+              <PropertyRef Name="CandleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ListOrder__Order__32E0915F">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="ListOrder" Type="Self.ListOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ListOrder">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Material__Materi__276EDEB3">
+          <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MaterialType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="MaterialTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище BooDBModelContainer">
+          <EntitySet Name="Candle" EntityType="Self.Candle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CandleComposition" EntityType="Self.CandleComposition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ListOrder" EntityType="Self.ListOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MaterialType" EntityType="Self.MaterialType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Receipt" EntityType="Self.Receipt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CandleCom__Candl__2C3393D0" Association="Self.FK__CandleCom__Candl__2C3393D0">
+            <End Role="Candle" EntitySet="Candle" />
+            <End Role="CandleComposition" EntitySet="CandleComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CandleCom__Mater__2D27B809" Association="Self.FK__CandleCom__Mater__2D27B809">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="CandleComposition" EntitySet="CandleComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ListOrder__Candl__31EC6D26" Association="Self.FK__ListOrder__Candl__31EC6D26">
+            <End Role="Candle" EntitySet="Candle" />
+            <End Role="ListOrder" EntitySet="ListOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ListOrder__Order__32E0915F" Association="Self.FK__ListOrder__Order__32E0915F">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="ListOrder" EntitySet="ListOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Material__Materi__276EDEB3" Association="Self.FK__Material__Materi__276EDEB3">
+            <End Role="MaterialType" EntitySet="MaterialType" />
+            <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BooDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Candle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CandleCode" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Double" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Form" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CandleComposition" Relationship="Self.FK__CandleCom__Candl__2C3393D0" FromRole="Candle" ToRole="CandleComposition" />
+          <NavigationProperty Name="ListOrder" Relationship="Self.FK__ListOrder__Candl__31EC6D26" FromRole="Candle" ToRole="ListOrder" />
+        </EntityType>
+        <EntityType Name="CandleComposition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CandleId" Type="Int32" Nullable="false" />
+          <Property Name="MaterialId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Candle" Relationship="Self.FK__CandleCom__Candl__2C3393D0" FromRole="CandleComposition" ToRole="Candle" />
+          <NavigationProperty Name="Material" Relationship="Self.FK__CandleCom__Mater__2D27B809" FromRole="CandleComposition" ToRole="Material" />
+        </EntityType>
+        <EntityType Name="ListOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="CandleId" Type="Int32" Nullable="false" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Candle" Relationship="Self.FK__ListOrder__Candl__31EC6D26" FromRole="ListOrder" ToRole="Candle" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__ListOrder__Order__32E0915F" FromRole="ListOrder" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MaterialTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CandleComposition" Relationship="Self.FK__CandleCom__Mater__2D27B809" FromRole="Material" ToRole="CandleComposition" />
+          <NavigationProperty Name="MaterialType" Relationship="Self.FK__Material__Materi__276EDEB3" FromRole="Material" ToRole="MaterialType" />
+        </EntityType>
+        <EntityType Name="MaterialType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Material" Relationship="Self.FK__Material__Materi__276EDEB3" FromRole="MaterialType" ToRole="Material" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderStatus" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ListOrder" Relationship="Self.FK__ListOrder__Order__32E0915F" FromRole="Order" ToRole="ListOrder" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__CandleCom__Candl__2C3393D0">
+          <End Role="Candle" Type="Self.Candle" Multiplicity="1" />
+          <End Role="CandleComposition" Type="Self.CandleComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CandleComposition">
+              <PropertyRef Name="CandleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ListOrder__Candl__31EC6D26">
+          <End Role="Candle" Type="Self.Candle" Multiplicity="1" />
+          <End Role="ListOrder" Type="Self.ListOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ListOrder">
+              <PropertyRef Name="CandleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CandleCom__Mater__2D27B809">
+          <End Role="Material" Type="Self.Material" Multiplicity="1" />
+          <End Role="CandleComposition" Type="Self.CandleComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CandleComposition">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ListOrder__Order__32E0915F">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="ListOrder" Type="Self.ListOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ListOrder">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Material__Materi__276EDEB3">
+          <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MaterialType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="MaterialTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Boo" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Candle" EntityType="Self.Candle" />
+          <EntitySet Name="CandleComposition" EntityType="Self.CandleComposition" />
+          <EntitySet Name="ListOrder" EntityType="Self.ListOrder" />
+          <EntitySet Name="Material" EntityType="Self.Material" />
+          <EntitySet Name="MaterialType" EntityType="Self.MaterialType" />
+          <EntitySet Name="Order" EntityType="Self.Order" />
+          <EntitySet Name="Receipt" EntityType="Self.Receipt" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK__CandleCom__Candl__2C3393D0" Association="Self.FK__CandleCom__Candl__2C3393D0">
+            <End Role="Candle" EntitySet="Candle" />
+            <End Role="CandleComposition" EntitySet="CandleComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ListOrder__Candl__31EC6D26" Association="Self.FK__ListOrder__Candl__31EC6D26">
+            <End Role="Candle" EntitySet="Candle" />
+            <End Role="ListOrder" EntitySet="ListOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CandleCom__Mater__2D27B809" Association="Self.FK__CandleCom__Mater__2D27B809">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="CandleComposition" EntitySet="CandleComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ListOrder__Order__32E0915F" Association="Self.FK__ListOrder__Order__32E0915F">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="ListOrder" EntitySet="ListOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Material__Materi__276EDEB3" Association="Self.FK__Material__Materi__276EDEB3">
+            <End Role="MaterialType" EntitySet="MaterialType" />
+            <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище BooDBModelContainer" CdmEntityContainer="Boo">
+          <EntitySetMapping Name="Candle">
+            <EntityTypeMapping TypeName="BooDBModel.Candle">
+              <MappingFragment StoreEntitySet="Candle">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CandleCode" ColumnName="CandleCode" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Form" ColumnName="Form" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CandleComposition">
+            <EntityTypeMapping TypeName="BooDBModel.CandleComposition">
+              <MappingFragment StoreEntitySet="CandleComposition">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CandleId" ColumnName="CandleId" />
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListOrder">
+            <EntityTypeMapping TypeName="BooDBModel.ListOrder">
+              <MappingFragment StoreEntitySet="ListOrder">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="CandleId" ColumnName="CandleId" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Material">
+            <EntityTypeMapping TypeName="BooDBModel.Material">
+              <MappingFragment StoreEntitySet="Material">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MaterialTypeId" ColumnName="MaterialTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaterialType">
+            <EntityTypeMapping TypeName="BooDBModel.MaterialType">
+              <MappingFragment StoreEntitySet="MaterialType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="BooDBModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipt">
+            <EntityTypeMapping TypeName="BooDBModel.Receipt">
+              <MappingFragment StoreEntitySet="Receipt">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="BooDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
